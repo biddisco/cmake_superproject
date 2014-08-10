@@ -27,26 +27,31 @@ Git_External(
   ${CMAKE_CURRENT_SOURCE_DIR}/vmmlib 
   https://github.com/biddisco/vmmlib.git 
   subproject
+  VERBOSE
 )
 Git_External(
   ${CMAKE_CURRENT_SOURCE_DIR}/lunchbox 
   https://github.com/biddisco/Lunchbox.git 
   subproject
+  VERBOSE
 )
 Git_External(
   ${CMAKE_CURRENT_SOURCE_DIR}/collage 
   https://github.com/biddisco/Collage.git 
   subproject
+  VERBOSE
 )
 Git_External(
   ${CMAKE_CURRENT_SOURCE_DIR}/dash 
   https://github.com/biddisco/dash.git 
   subproject
+  VERBOSE
 )
 Git_External(
   ${CMAKE_CURRENT_SOURCE_DIR}/codash
   https://github.com/biddisco/codash.git 
   subproject
+  VERBOSE
 )
 #--------------------------------------------------
 # load add_subproject macro from common tools
