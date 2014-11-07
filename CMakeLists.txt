@@ -1,4 +1,16 @@
-project(test_superproject)
+project(bbp-pv)
+
+#--------------------------------------------------
+# cmake policies
+# see http://www.cmake.org/cmake/help/v2.8.12/cmake.html#section_Policies
+#--------------------------------------------------
+foreach(p
+    CMP0003 CMP0017 CMP0023 CMP0042
+    )
+  if(POLICY ${p})
+    cmake_policy(SET ${p} NEW)
+  endif()
+endforeach()
 
 #--------------------------------------------------
 # cmake old/new compatibility
@@ -17,7 +29,7 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/CMake/GitExternal.cmake)
 Git_External(
   ${CMAKE_CURRENT_SOURCE_DIR}/CMake/common 
   https://github.com/biddisco/CMake.git 
-  subproject
+  master
 )
 
 #--------------------------------------------------
@@ -26,32 +38,117 @@ Git_External(
 Git_External(
   ${CMAKE_CURRENT_SOURCE_DIR}/vmmlib 
   https://github.com/biddisco/vmmlib.git 
-  subproject
+  master
+  NO_UPDATE
   VERBOSE
 )
 Git_External(
   ${CMAKE_CURRENT_SOURCE_DIR}/lunchbox 
-  https://github.com/biddisco/Lunchbox.git 
-  subproject
+  git@github.com:Eyescale/Lunchbox.git 
+  master
+  NO_UPDATE
   VERBOSE
 )
 Git_External(
   ${CMAKE_CURRENT_SOURCE_DIR}/collage 
-  https://github.com/biddisco/Collage.git 
-  subproject
+  git@github.com:Eyescale/Collage.git
+  master
+  NO_UPDATE
   VERBOSE
 )
 Git_External(
   ${CMAKE_CURRENT_SOURCE_DIR}/dash 
-  https://github.com/biddisco/dash.git 
-  subproject
+  git@github.com:BlueBrain/dash.git
+#  https://github.com/biddisco/dash.git 
+  master
+  NO_UPDATE
   VERBOSE
 )
 Git_External(
   ${CMAKE_CURRENT_SOURCE_DIR}/codash
-  https://github.com/biddisco/codash.git 
+  git@github.com:BlueBrain/codash.git
+# https://github.com/biddisco/codash.git 
+  master
+  NO_UPDATE
+  VERBOSE
+)
+Git_External(
+  ${CMAKE_CURRENT_SOURCE_DIR}/bbptestdata
+  ssh://biddisco@bbpcode.epfl.ch/common/TestData
+  master
+  NO_UPDATE
+  VERBOSE
+)
+Git_External(
+  ${CMAKE_CURRENT_SOURCE_DIR}/brion
+  ssh://bbpcode.epfl.ch/common/Brion.git
+  subproject
+  NO_UPDATE
+  VERBOSE
+)
+Git_External(
+  ${CMAKE_CURRENT_SOURCE_DIR}/bbpsdk
+  ssh://bbpcode.epfl.ch/common/BBPSDK.git
+  master
+  NO_UPDATE
+  VERBOSE
+)
+Git_External(
+  ${CMAKE_CURRENT_SOURCE_DIR}/displaycluster
+  git@github.com:biddisco/DisplayCluster.git
   subproject
   VERBOSE
+  NO_UPDATE
+)
+Git_External(
+  ${CMAKE_CURRENT_SOURCE_DIR}/flatbuffers
+  git@github.com:BlueBrain/flatbuffers.git
+  master
+  VERBOSE
+  NO_UPDATE
+)
+
+Git_External(
+  ${CMAKE_CURRENT_SOURCE_DIR}/zeq
+  https://github.com/HBPVIS/zeq.git
+  master
+  VERBOSE
+  NO_UPDATE
+)
+Git_External(
+  ${CMAKE_CURRENT_SOURCE_DIR}/pv-cuda-piston
+  git@github.com:biddisco/pv-cuda-piston.git
+  pv-4.2
+  VERBOSE
+#NO_UPDATE
+)
+Git_External(
+  ${CMAKE_CURRENT_SOURCE_DIR}/pv-zoltan
+  git@github.com:biddisco/pv-zoltan.git
+  pv-4.2
+  VERBOSE
+#NO_UPDATE
+)
+Git_External(
+  ${CMAKE_CURRENT_SOURCE_DIR}/pv-meshless
+  git@github.com:biddisco/pv-meshless.git
+  pv-4.2
+  VERBOSE
+#NO_UPDATE
+)
+Git_External(
+  ${CMAKE_CURRENT_SOURCE_DIR}/pv-splotch
+  git+ssh://biddisco@scm.hpcforge.org/var/lib/gforge/chroot/scmrepos/git/pv-splotch/pv-splotch.git
+  pv-4.2
+  VERBOSE
+#NO_UPDATE
+)
+Git_External(
+  ${CMAKE_CURRENT_SOURCE_DIR}/pv-bbp
+  ela.cscs.ch:/users/biddisco/gitrepos/parabbp
+  pv-4.2
+  VERBOSE
+#NO_UPDATE
 )
 
 #--------------------------------------------------
@@ -65,11 +162,36 @@ include(CTest)
 include(${CMAKE_CURRENT_SOURCE_DIR}/CMake/common/SubProject.cmake)
 
 #--------------------------------------------------
+# Setup Output directories
+#--------------------------------------------------
+SET (CMAKE_RUNTIME_OUTPUT_DIRECTORY
+    ${PROJECT_BINARY_DIR}/bin CACHE PATH "Single Directory for all Executables."
+)
+SET (CMAKE_LIBRARY_OUTPUT_DIRECTORY
+    ${PROJECT_BINARY_DIR}/bin CACHE PATH "Single Directory for all Libraries"
+)
+SET (CMAKE_ARCHIVE_OUTPUT_DIRECTORY
+    ${PROJECT_BINARY_DIR}/bin CACHE PATH "Single Directory for all static libraries."
+)
+
+#--------------------------------------------------
 # Add the subprojects to our project
 # args are : project name in subproject, path from here
 #--------------------------------------------------
-add_subproject(vmmlib   vmmlib)
-add_subproject(Lunchbox lunchbox)
-add_subproject(Collage  collage)
-add_subproject(dash     dash)
-add_subproject(codash   codash)
+add_subproject(vmmlib      vmmlib)
+add_subproject(Lunchbox    lunchbox)
+add_subproject(Collage     collage)
+add_subproject(dash        dash)
+add_subproject(codash      codash)
+add_subproject(BBPTestData bbptestdata)
+add_subproject(Brion       brion)
+add_subproject(BBPSDK      bbpsdk)
+add_subproject(FlatBuffers flatbuffers)
+add_subproject(zeq         zeq)
+ADD_SUBPROJECT(pv_zoltan      pv-zoltan)
+ADD_SUBPROJECT(pv_cuda_piston pv-cuda-piston)
+ADD_SUBPROJECT(pv_meshless    pv-meshless)
+ADD_SUBPROJECT(pv_splotch     pv-splotch/paraview)
+ADD_SUBPROJECT(pv_bbp         pv-bbp)
+ADD_SUBPROJECT(DSM-Manager    "Icarus/DSMManager")
+
