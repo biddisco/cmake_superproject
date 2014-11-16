@@ -172,16 +172,16 @@ Git_External(
 #  NO_UPDATE
 )
 Git_External(
-  ${CMAKE_CURRENT_SOURCE_DIR}/pv-splotch
-  git+ssh://biddisco@scm.hpcforge.org/var/lib/gforge/chroot/scmrepos/git/pv-splotch/pv-splotch.git
+  ${CMAKE_CURRENT_SOURCE_DIR}/pv-bbp
+  ela.cscs.ch:/users/biddisco/gitrepos/parabbp
   pv-4.2
   VERBOSE
 #  NO_UPDATE
 )
 Git_External(
-  ${CMAKE_CURRENT_SOURCE_DIR}/pv-bbp
-  ela.cscs.ch:/users/biddisco/gitrepos/parabbp
-  pv-4.2
+  ${CMAKE_CURRENT_SOURCE_DIR}/pv-splotch
+  git+ssh://biddisco@scm.hpcforge.org/var/lib/gforge/chroot/scmrepos/git/pv-splotch/pv-splotch.git
+  pv-4.2-mip
   VERBOSE
 #  NO_UPDATE
 )
