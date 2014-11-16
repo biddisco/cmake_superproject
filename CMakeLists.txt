@@ -124,7 +124,7 @@ Git_External(
 Git_External(
   ${CMAKE_CURRENT_SOURCE_DIR}/bbpsdk
   ssh://bbpcode.epfl.ch/common/BBPSDK.git
-  master
+  pv-4.2
   NO_UPDATE
   VERBOSE
 )
