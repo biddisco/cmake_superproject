@@ -1,0 +1,138 @@
+#
+# Boost
+#
+# ./bootstrap.sh --prefix=/Users/biddisco/apps/boost-1_57_0
+./b2 --prefix=/Users/biddisco/apps/boost-1_57_0 --layout=versioned threading=multi link=shared variant=release address-model=64 -j8 install
+
+
+#
+# HDF5
+#
+cd /Users/biddisco/build/hdf5_1_8_cmake
+cmake \
+ -DHDF5_BUILD_CPP_LIB=ON \
+ -DHDF5_BUILD_HL_LIB=ON \
+ -DHDF5_BUILD_TOOLS=ON \
+ -DHDF5_ENABLE_PARALLEL=ON \
+ -DCMAKE_INSTALL_PREFIX=/Users/biddisco/apps/hdf5_1_8_cmake \
+ /Users/biddisco/src/hdf5_1_8_cmake
+
+make -j8 install
+
+
+#
+# h5fddsm, use hdf5 in build dir as we need private headers
+#
+cd /Users/biddisco/build/h5fddsm
+cmake \
+ -DHDF5_DIR=/Users/biddisco/build/hdf5_1_8_cmake/ \
+ -DH5FDdsm_BUILD_STEERING=ON \
+ -DH5FDdsm_BUILD_TOOLS=ON \
+ -DCMAKE_INSTALL_PREFIX=/Users/biddisco/apps/h5fddsm \
+ /Users/biddisco/src/h5fddsm
+
+make -j8 install
+
+
+#
+# Paraview
+#
+# grep ^PARAVIEW_BUILD_PLUGIN_[^-]*:  CMakeCache.txt | sed "s/.*/ -D& \\\/"
+
+cd /Users/biddisco/build/pv4
+cmake \
+ -DHDF5_DIR=/Users/biddisco/apps/hdf5_1_8_cmake/share/cmake/hdf5 \
+ -DH5FDdsm_DIR=/Users/biddisco/apps/h5fddsm/share/cmake/h5fddsm \
+ -DPARAVIEW_USE_MPI=ON \
+ -DPARAVIEW_ENABLE_PYTHON=ON \
+ -DPARAVIEW_ENABLE_CATALYST=ON \
+ -DVTK_USE_SYSTEM_HDF5=ON \
+ -DXDMF_USE_H5FD_DSM=ON \
+ -DXDMF_BUILD_MPI=ON \
+ -DVTK_XDMF_USE_MPI=ON \
+ -DPARAVIEW_BUILD_PLUGIN_AdiosReader:BOOL=FALSE \
+ -DPARAVIEW_BUILD_PLUGIN_AnalyzeNIfTIIO:BOOL=OFF \
+ -DPARAVIEW_BUILD_PLUGIN_ArrowGlyph:BOOL=OFF \
+ -DPARAVIEW_BUILD_PLUGIN_CGNSReader:BOOL=FALSE \
+ -DPARAVIEW_BUILD_PLUGIN_CatalystScriptGeneratorPlugin:BOOL=TRUE \
+ -DPARAVIEW_BUILD_PLUGIN_EyeDomeLighting:BOOL=OFF \
+ -DPARAVIEW_BUILD_PLUGIN_ForceTime:BOOL=FALSE \
+ -DPARAVIEW_BUILD_PLUGIN_GMVReader:BOOL=OFF \
+ -DPARAVIEW_BUILD_PLUGIN_H5PartReader:BOOL=OFF \
+ -DPARAVIEW_BUILD_PLUGIN_InSituExodus:BOOL=FALSE \
+ -DPARAVIEW_BUILD_PLUGIN_MantaView:BOOL=FALSE \
+ -DPARAVIEW_BUILD_PLUGIN_MobileRemoteControl:BOOL=OFF \
+ -DPARAVIEW_BUILD_PLUGIN_Moments:BOOL=OFF \
+ -DPARAVIEW_BUILD_PLUGIN_Nektar:BOOL=FALSE \
+ -DPARAVIEW_BUILD_PLUGIN_NonOrthogonalSource:BOOL=OFF \
+ -DPARAVIEW_BUILD_PLUGIN_PacMan:BOOL=OFF \
+ -DPARAVIEW_BUILD_PLUGIN_PointSprite:BOOL=OFF \
+ -DPARAVIEW_BUILD_PLUGIN_PythonQtPlugin:BOOL=FALSE \
+ -DPARAVIEW_BUILD_PLUGIN_QuadView:BOOL=OFF \
+ -DPARAVIEW_BUILD_PLUGIN_RGBZView:BOOL=OFF \
+ -DPARAVIEW_BUILD_PLUGIN_SLACTools:BOOL=OFF \
+ -DPARAVIEW_BUILD_PLUGIN_SciberQuestToolKit:BOOL=OFF \
+ -DPARAVIEW_BUILD_PLUGIN_SierraPlotTools:BOOL=OFF \
+ -DPARAVIEW_BUILD_PLUGIN_StreamingParticles:BOOL=OFF \
+ -DPARAVIEW_BUILD_PLUGIN_SurfaceLIC:BOOL=OFF \
+ -DPARAVIEW_BUILD_PLUGIN_TemporalParallelismScriptGenerator:BOOL=FALSE \
+ -DPARAVIEW_BUILD_PLUGIN_UncertaintyRendering:BOOL=OFF \
+ -DPARAVIEW_BUILD_PLUGIN_VRPlugin:BOOL=FALSE \
+ -DPARAVIEW_BUILD_PLUGIN_VaporPlugin:BOOL=FALSE \
+ /Users/biddisco/src/paraview
+
+make -j8 -k; make
+
+
+#
+# BBP+plugins
+#
+cd /Users/biddisco/build/bbp
+cmake \
+ -DCMAKE_CXX_FLAGS=-std=c++11 \
+ -DCUDA_NVCC_FLAGS=-std=c++11 \
+ -DCMAKE_OSX_ARCHITECTURES=x86_64 \
+ -DBUILDYARD_DISABLED=ON \
+ -DBBP_SDK_JAVA=OFF \
+ -DBBP_SDK_PYTHON=OFF \
+ -DSUBPROJECT_BBPSDK:BOOL=ON \
+ -DSUBPROJECT_BBPTestData:BOOL=OFF \
+ -DSUBPROJECT_Brion:BOOL=ON \
+ -DSUBPROJECT_Collage:BOOL=OFF \
+ -DSUBPROJECT_DSM-Manager:BOOL=ON \
+ -DSUBPROJECT_FlatBuffers:BOOL=OFF \
+ -DSUBPROJECT_Lunchbox:BOOL=ON \
+ -DSUBPROJECT_codash:BOOL=OFF \
+ -DSUBPROJECT_dash:BOOL=OFF \
+ -DSUBPROJECT_pv_bbp:BOOL=ON \
+ -DSUBPROJECT_pv_cuda_piston:BOOL=ON \
+ -DSUBPROJECT_pv_meshless:BOOL=ON \
+ -DSUBPROJECT_pv_splotch:BOOL=ON \
+ -DSUBPROJECT_pv_zoltan:BOOL=ON \
+ -DSUBPROJECT_vmmlib:BOOL=ON \
+ -DSUBPROJECT_zeq:BOOL=OFF \
+ -DPV_CUDA_PISTON_USE_BOOST_TUPLE=ON \
+ -DPV_CUDA_PISTON_BUILD_REPRESENTATION=ON \
+ -DPV_CUDA_PISTON_USE_BOOST_TUPLE=ON \
+ -DPV_MESHLESS_USE_HDF5=ON \
+ -DPV_MESHLESS_USE_OPENMP=ON \
+ -DPV_SPLOTCH_DISABLE_READERS=ON \
+ -DPV_SPLOTCH_USE_CUDA=ON \
+ -DPV_SPLOTCH_USE_OPENMP=OFF \
+ -DParaView_DIR=/Users/biddisco/build/pv4 \
+ -DHDF5_DIR=/Users/biddisco/apps/hdf5_1_8_cmake/share/cmake/hdf5 \
+ -DH5FDdsm_DIR=/Users/biddisco/apps/h5fddsm/share/cmake/h5fddsm \
+ -DBOOST_ROOT=/Users/biddisco/apps/boost-1_57_0 \
+ -DBoost_INCLUDE_DIR=/Users/biddisco/apps/boost-1_57_0/include/boost-1_57 \
+ -DBoost_LIBRARY_DIR=/Users/biddisco/apps/boost-1_57_0/lib \
+ -DBoost_COMPILER=-xgcc42 \
+ -DBoost_DEBUG=ON \
+ /Users/biddisco/src/bbp-pv
+
+make -j8 -k; make
+
+
+#
+# HPX
+#
+
