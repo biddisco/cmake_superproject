@@ -72,7 +72,8 @@ Git_External(
 #--------------------------------------------------
 Git_External(
   ${CMAKE_CURRENT_SOURCE_DIR}/vmmlib
-  https://github.com/biddisco/vmmlib.git
+#  https://github.com/biddisco/vmmlib.git
+  https://github.com/Eyescale/vmmlib
   master
   NO_UPDATE
   VERBOSE
@@ -228,4 +229,4 @@ ADD_SUBPROJECT(pv_cuda_piston pv-cuda-piston)
 ADD_SUBPROJECT(pv_meshless    pv-meshless)
 ADD_SUBPROJECT(pv_splotch     pv-splotch/paraview)
 ADD_SUBPROJECT(pv_bbp         pv-bbp)
-ADD_SUBPROJECT(DSM-Manager    "Icarus/DSMManager")
+#ADD_SUBPROJECT(DSM-Manager    "Icarus/DSMManager")
