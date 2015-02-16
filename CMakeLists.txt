@@ -56,6 +56,7 @@ cmake_minimum_required(VERSION 2.8)
 # load script for checking out projects from git
 #--------------------------------------------------
 include(${CMAKE_CURRENT_SOURCE_DIR}/CMake/GitExternal.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/CMake/common/SubProject.cmake)
 
 #--------------------------------------------------
 # checkout common cmake tools library
@@ -64,7 +65,7 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/CMake/GitExternal.cmake)
 Git_External(
   ${CMAKE_CURRENT_SOURCE_DIR}/CMake/common
   https://github.com/biddisco/CMake.git
-  master
+  master DUMMY
 )
 
 #--------------------------------------------------
@@ -74,21 +75,21 @@ Git_External(
   ${CMAKE_CURRENT_SOURCE_DIR}/vmmlib
 #  https://github.com/biddisco/vmmlib.git
   https://github.com/Eyescale/vmmlib
-  master
+  master DUMMY
   NO_UPDATE
   VERBOSE
 )
 Git_External(
   ${CMAKE_CURRENT_SOURCE_DIR}/lunchbox
   git@github.com:Eyescale/Lunchbox.git
-  master
+  master DUMMY
   NO_UPDATE
   VERBOSE
 )
 Git_External(
   ${CMAKE_CURRENT_SOURCE_DIR}/collage
   git@github.com:Eyescale/Collage.git
-  master
+  master DUMMY
   NO_UPDATE
   VERBOSE
 )
@@ -96,7 +97,7 @@ Git_External(
   ${CMAKE_CURRENT_SOURCE_DIR}/dash
   git@github.com:BlueBrain/dash.git
 #  https://github.com/biddisco/dash.git
-  master
+  master DUMMY
   NO_UPDATE
   VERBOSE
 )
@@ -104,28 +105,28 @@ Git_External(
   ${CMAKE_CURRENT_SOURCE_DIR}/codash
   git@github.com:BlueBrain/codash.git
 # https://github.com/biddisco/codash.git
-  master
+  master DUMMY
   NO_UPDATE
   VERBOSE
 )
 Git_External(
   ${CMAKE_CURRENT_SOURCE_DIR}/bbptestdata
   ssh://biddisco@bbpcode.epfl.ch/common/TestData
-  master
+  master DUMMY
   NO_UPDATE
   VERBOSE
 )
 Git_External(
   ${CMAKE_CURRENT_SOURCE_DIR}/brion
   ssh://bbpcode.epfl.ch/common/Brion.git
-  subproject
+  subproject DUMMY
   NO_UPDATE
   VERBOSE
 )
 Git_External(
   ${CMAKE_CURRENT_SOURCE_DIR}/bbpsdk
   ssh://bbpcode.epfl.ch/common/BBPSDK.git
-  pv-4.2
+  master
   NO_UPDATE
   VERBOSE
 )
@@ -133,13 +134,13 @@ Git_External(
   ${CMAKE_CURRENT_SOURCE_DIR}/displaycluster
   git@github.com:biddisco/DisplayCluster.git
   subproject
-  NO_UPDATE
+  NO_UPDATE DUMMY
   VERBOSE
 )
 Git_External(
   ${CMAKE_CURRENT_SOURCE_DIR}/flatbuffers
   git@github.com:BlueBrain/flatbuffers.git
-  master
+  master DUMMY
   VERBOSE
   NO_UPDATE
 )
@@ -147,42 +148,42 @@ Git_External(
 Git_External(
   ${CMAKE_CURRENT_SOURCE_DIR}/zeq
   https://github.com/HBPVIS/zeq.git
-  master
+  master DUMMY
   VERBOSE
   NO_UPDATE
 )
 Git_External(
   ${CMAKE_CURRENT_SOURCE_DIR}/pv-cuda-piston
   git@github.com:biddisco/pv-cuda-piston.git
-  pv-4.2
+  pv-4.4 DUMMY
   VERBOSE
 #  NO_UPDATE
 )
 Git_External(
   ${CMAKE_CURRENT_SOURCE_DIR}/pv-zoltan
   git@github.com:biddisco/pv-zoltan.git
-  pv-4.2
+  pv-4.4 DUMMY
   VERBOSE
 #  NO_UPDATE
 )
 Git_External(
   ${CMAKE_CURRENT_SOURCE_DIR}/pv-meshless
   git@github.com:biddisco/pv-meshless.git
-  pv-4.2
+  pv-4.4 DUMMY
   VERBOSE
 #  NO_UPDATE
 )
 Git_External(
   ${CMAKE_CURRENT_SOURCE_DIR}/pv-bbp
   ela.cscs.ch:/users/biddisco/gitrepos/parabbp
-  pv-4.2
+  pv-4.4 DUMMY
   VERBOSE
 #  NO_UPDATE
 )
 Git_External(
   ${CMAKE_CURRENT_SOURCE_DIR}/pv-splotch
   git+ssh://biddisco@scm.hpcforge.org/var/lib/gforge/chroot/scmrepos/git/pv-splotch/pv-splotch.git
-  pv-4.2-mip
+  pv-4.4
   VERBOSE
 #  NO_UPDATE
 )

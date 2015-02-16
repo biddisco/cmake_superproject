@@ -51,11 +51,20 @@ macro(GIT_EXTERNAL_MESSAGE msg)
   endif()
 endmacro(GIT_EXTERNAL_MESSAGE)
 
-function(GIT_EXTERNAL DIR REPO TAG)
+function(GIT_EXTERNAL DIR REPO TAG VARIABLE)
   cmake_parse_arguments(GIT_EXTERNAL "NO_UPDATE;VERBOSE" "" "RESET" ${ARGN})
   get_filename_component(DIR  "${DIR}" ABSOLUTE)
   get_filename_component(NAME "${DIR}" NAME)
   get_filename_component(GIT_EXTERNAL_DIR "${DIR}/.." ABSOLUTE)
+
+  get_property(_gitexternals_repo_setup GLOBAL PROPERTY _gitexternals_LOCATION_${REPO}_${TAG} SET)
+  if(_gitexternals_repo_setup)
+    get_property(_gitexternals_repo_location GLOBAL PROPERTY _gitexternals_LOCATION_${REPO}_${TAG})
+    message(STATUS "Skipping clone of ${REPO} and using ${_gitexternals_repo_location} instead")
+    return()
+  endif()
+  set_property(GLOBAL PROPERTY _gitexternals_LOCATION_${REPO}_${TAG} ${DIR})
+  set(${VARIABLE} "${DIR}" CACHE INTERNAL "" FORCE)
 
   if(NOT EXISTS "${DIR}")
     message(STATUS "git clone ${REPO} ${DIR}")
@@ -156,25 +165,28 @@ if(EXISTS ${GIT_EXTERNALS} AND NOT GIT_EXTERNAL_SCRIPT_MODE)
     if(NOT LINE STREQUAL DATA)
       string(REGEX REPLACE "[ ]+" ";" DATA "${DATA}")
       list(LENGTH DATA DATA_LENGTH)
-      if(DATA_LENGTH EQUAL 3)
+      if(DATA_LENGTH EQUAL 4)
         list(GET DATA 0 DIR)
         list(GET DATA 1 REPO)
         list(GET DATA 2 TAG)
-
+        list(GET DATA 3 VARIABLE)
         # Create a unique, flat name
         string(REPLACE "/" "_" GIT_EXTERNAL_NAME ${DIR}_${PROJECT_NAME})
 
         if(NOT TARGET update_git_external_${GIT_EXTERNAL_NAME}) # not done
           # pull in identified external
-          git_external(${DIR} ${REPO} ${TAG})
+          git_external(${DIR} ${REPO} ${TAG} ${VARIABLE})
 
           # Create update script and target to bump external spec
           if(NOT TARGET update)
             add_custom_target(update)
+            set_target_properties(update PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD TRUE)
           endif()
           if(NOT TARGET update_git_external)
             add_custom_target(update_git_external)
+            set_target_properties(update_git_external PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD TRUE)
             add_custom_target(flatten_git_external)
+            set_target_properties(flatten_git_external PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD TRUE)
             add_dependencies(update update_git_external)
           endif()
 
@@ -193,6 +205,7 @@ if(EXISTS ${GIT_EXTERNALS} AND NOT GIT_EXTERNAL_SCRIPT_MODE)
               COMMAND ${CMAKE_COMMAND} -DGIT_EXTERNAL_SCRIPT_MODE=1 -P ${GIT_EXTERNAL_SCRIPT}
               COMMENT "Recreate ${GIT_EXTERNALS_BASE}"
               WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
+            set_target_properties(${GIT_EXTERNAL_TARGET} PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD TRUE)
           endif()
 
           set(GIT_EXTERNAL_SCRIPT
@@ -216,6 +229,7 @@ endif()")
             COMMENT "Update ${REPO} in ${GIT_EXTERNALS_BASE}"
             DEPENDS ${GIT_EXTERNAL_TARGET}
             WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
+          set_target_properties(update_git_external_${GIT_EXTERNAL_NAME} PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD TRUE)
           add_dependencies(update_git_external
             update_git_external_${GIT_EXTERNAL_NAME})
 
@@ -234,6 +248,7 @@ endif()")
             COMMENT "Flatten ${REPO} into ${DIR}"
             DEPENDS make-branch
             WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/${DIR}")
+          set_target_properties(flatten_git_external_${GIT_EXTERNAL_NAME} PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD TRUE)
           add_dependencies(flatten_git_external
             flatten_git_external_${GIT_EXTERNAL_NAME})
         endif()
