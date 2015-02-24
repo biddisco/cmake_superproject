@@ -62,11 +62,11 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/CMake/common/SubProject.cmake)
 # checkout common cmake tools library
 # args are : location here, repo URL, repo branch
 #--------------------------------------------------
-Git_External(
-  ${CMAKE_CURRENT_SOURCE_DIR}/CMake/common
-  https://github.com/biddisco/CMake.git
-  master DUMMY
-)
+#Git_External(
+#  ${CMAKE_CURRENT_SOURCE_DIR}/CMake/common
+#  https://github.com/biddisco/CMake.git
+#  master DUMMY
+#)
 
 #--------------------------------------------------
 # checkout projects we want to build together
@@ -174,6 +174,13 @@ Git_External(
 #  NO_UPDATE
 )
 Git_External(
+  ${CMAKE_CURRENT_SOURCE_DIR}/pv-temporal
+  git@github.com:biddisco/pv-temporal.git
+  master DUMMY
+  VERBOSE
+#  NO_UPDATE
+)
+Git_External(
   ${CMAKE_CURRENT_SOURCE_DIR}/pv-bbp
   ela.cscs.ch:/users/biddisco/gitrepos/parabbp
   pv-4.4 DUMMY
@@ -189,9 +196,10 @@ Git_External(
 )
 
 #--------------------------------------------------
-# support testing
+# Testing : Include the standard testing module
 #--------------------------------------------------
 include(CTest)
+include(Dart)
 
 #--------------------------------------------------
 # load add_subproject macro from common tools
@@ -225,9 +233,10 @@ add_subproject(Brion       brion)
 add_subproject(BBPSDK      bbpsdk)
 add_subproject(FlatBuffers flatbuffers)
 add_subproject(zeq         zeq)
-ADD_SUBPROJECT(pv_zoltan      pv-zoltan)
-ADD_SUBPROJECT(pv_cuda_piston pv-cuda-piston)
-ADD_SUBPROJECT(pv_meshless    pv-meshless)
-ADD_SUBPROJECT(pv_splotch     pv-splotch/paraview)
-ADD_SUBPROJECT(pv_bbp         pv-bbp)
+add_subproject(pv_zoltan      pv-zoltan)
+add_subproject(pv_cuda_piston pv-cuda-piston)
+add_subproject(pv_temporal    pv-temporal)
+add_subproject(pv_meshless    pv-meshless)
+add_subproject(pv_splotch     pv-splotch/paraview)
+add_subproject(pv_bbp         pv-bbp)
 #ADD_SUBPROJECT(DSM-Manager    "Icarus/DSMManager")
