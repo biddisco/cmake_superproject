@@ -1,5 +1,6 @@
 CMake/common
 .gdbinit
+.DS_Store
 Icarus/
 bbpsdk/
 bbptestdata/
