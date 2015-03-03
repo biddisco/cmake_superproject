@@ -15,6 +15,7 @@ pv-bbp/
 pv-cuda-piston/
 pv-meshless/
 pv-splotch/
+pv-temporal/
 pv-zoltan/
 vmmlib/
 zeq/
