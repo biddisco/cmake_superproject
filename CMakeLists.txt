@@ -174,6 +174,20 @@ Git_External(
 #  NO_UPDATE
 )
 Git_External(
+  ${CMAKE_CURRENT_SOURCE_DIR}/pv-astro
+  git@github.com:biddisco/pv-astro.git
+  master DUMMY
+  VERBOSE
+#  NO_UPDATE
+)
+Git_External(
+  ${CMAKE_CURRENT_SOURCE_DIR}/pv-MIP
+  git@github.com:biddisco/pv-MIP.git
+  master DUMMY
+  VERBOSE
+#  NO_UPDATE
+)
+Git_External(
   ${CMAKE_CURRENT_SOURCE_DIR}/pv-temporal
   git@github.com:biddisco/pv-temporal.git
   master DUMMY
@@ -236,6 +250,8 @@ add_subproject(zeq         zeq)
 add_subproject(pv_zoltan      pv-zoltan)
 add_subproject(pv_cuda_piston pv-cuda-piston)
 add_subproject(pv_temporal    pv-temporal)
+add_subproject(pv_astro       pv-astro)
+add_subproject(pv_MIP         pv-MIP)
 add_subproject(pv_meshless    pv-meshless)
 add_subproject(pv_splotch     pv-splotch/paraview)
 add_subproject(pv_bbp         pv-bbp)
