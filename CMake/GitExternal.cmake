@@ -106,7 +106,7 @@ function(GIT_EXTERNAL DIR REPO TAG)
     return()
   endif()
 
-  if(GIT_EXTERNAL_DISABLE_UPDATE OR GIT_EXTERNAL_NO_UPDATE)
+  if(GIT_EXTERNAL_DISABLE_UPDATE)
     git_external_message("git update disabled by user")
     return()
   endif()
