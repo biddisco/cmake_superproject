@@ -18,5 +18,9 @@ pv-meshless/
 pv-splotch/
 pv-temporal/
 pv-zoltan/
+pv-MIP/
+pv-astro/
+pv-zeq/
+servus/
 vmmlib/
 zeq/
