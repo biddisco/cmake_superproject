@@ -53,6 +53,12 @@ endforeach()
 cmake_minimum_required(VERSION 2.8)
 
 #--------------------------------------------------
+# GitExternal config
+#--------------------------------------------------
+set(GIT_EXTERNAL_DISABLE_UPDATE ON)
+set(GIT_EXTERNAL_USER_FORK "" CACHE STRING "Disabled")
+
+#--------------------------------------------------
 # load script for checking out projects from git
 #--------------------------------------------------
 include(${CMAKE_CURRENT_SOURCE_DIR}/CMake/GitExternal.cmake)
